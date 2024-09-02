@@ -10,13 +10,16 @@ class Adaptee:
         return ".eetpadA eht fo roivaheb laicepS"
 
 
-class Adaptor(Target, Adaptee):
+class Adaptor(Target):
+
+    def __init__(self, adaptee: Adaptee):
+        self._adaptee = adaptee
 
     def request(self) -> str:
-        return f"Adaptor :: (TRANSLATED) {self.special_request()[::1]}"
+        return f"Adaptor :: (TRANSLATED) {self._adaptee.special_request()[::-1]}"
 
 
-def client_code(target_obj: "Target") -> None:
+def client_code(target_obj: Target) -> None:
     print(target_obj.request(), end="")
 
 
@@ -32,5 +35,5 @@ if __name__ == '__main__':
     print(f"Adaptee: {adaptee.special_request()}", end="\n\n")
 
     print("Client: But I can work with it via the Adapter:")
-    adaptor = Adaptor()
+    adaptor = Adaptor(adaptee)
     client_code(adaptor)
